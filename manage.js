@@ -11,7 +11,13 @@ const connection = mysql.createConnection({
 });
 
 const viewEmployees = () => {
-    
+    const query = ("SELECT * FROM info");
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
+        console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
+        console.log(res[0].id + "   " + res[0].first_name + "   " + res[0].last_name + "   " + res[0].title + "   " + res[0].department + "   " + res[0].salary + "   " + res[0].manager);
+    });
 }
 
 //Start beginning prompt
@@ -27,7 +33,7 @@ const startApp = () => {
         switch(answer.action) {
             case "View All Employees":
                 console.log("View All Employees SELECTED");
-                // viewEmployees(); - call function
+                viewEmployees();
                 break;
             case "View Employees By Department":
                 console.log("View Employees By Department SELECTED");
