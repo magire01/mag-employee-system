@@ -9,5 +9,29 @@ inquirer.prompt([
         name: "action"
     }
 ]).then(answer => {
-    console.log(answer);
+    switch(answer.action) {
+        case "View All Employees":
+            console.log("View All Employees SELECTED");
+            // viewEmployees(); - call function
+            break;
+        case "View Employees By Department":
+            console.log("View Employees By Department SELECTED");
+            // viewEmployeeDept(); - call function
+            break;
+        case "View Employees By Manager":
+            console.log("View Employees By Manager SELECTED");
+            // viewEmployeeMgr(); - call function
+            break;
+        case "Add Employee":
+            console.log("Add Employee SELECTED");
+            // addEmployee(); - call function
+            break;
+        case "Remove Employee":
+            console.log("Remove Employee SELECTED");
+            // removeEmployee(); - call function
+            break;
+        default:
+            console.log("Exit SELECTED");
+            // exitApp(); - call function
+    }
 })
