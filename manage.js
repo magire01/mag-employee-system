@@ -73,6 +73,29 @@ const addEmployee = () => {
     });
 }
 
+const removeEmployee = () => {
+    const names = []
+    connection.query(`SELECT * FROM info`, (err, res) => {
+        if (err) throw err;
+        for(var i = 0; i < res.length; i++) {
+            names.push(res[i].first_name);
+        }
+
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Select employee to delete",
+                choices: names,
+                name: "action"
+            }
+        ]).then(answer => {
+            console.log(answer.action + " selected!")
+        }) 
+    
+    })
+}
+    
+
 const viewEmployees = () => {
     const query = ("SELECT * FROM info");
     connection.query(query, (err, res) => {
@@ -115,7 +138,7 @@ const startApp = () => {
                 break;
             case "Remove Employee":
                 console.log("Remove Employee SELECTED");
-                // removeEmployee(); - call function
+                removeEmployee();
                 break;
             default:
                 console.log("Exit SELECTED");
