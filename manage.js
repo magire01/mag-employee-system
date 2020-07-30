@@ -1,3 +1,4 @@
+
 //npms
 const inquirer = require("inquirer");
 const mysql = require("mysql");
@@ -182,15 +183,12 @@ const viewEmployeeMgr = () => {
     
 }
 
-
-       
-
 const startApp = () => {
     inquirer.prompt([
         {
             type: "list",
             message: "What do you want to do?",
-            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee","Remove Employee", "Exit"],
+            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee","Remove Employee", "Update Employee Role", "Update Employee Manager", "Exit"],
             name: "action"
         }
     ]).then(answer => {
@@ -214,6 +212,14 @@ const startApp = () => {
             case "Remove Employee":
                 console.log("Remove Employee SELECTED");
                 removeEmployee();
+                break;
+            case "Update Employee Role":
+                console.log("Update Employee Role SELECTED");
+                updateEmployeeRole();
+                break;
+            case "Update Employee Manager":
+                console.log("Update Employee Manager SELECTED");
+                updateEmployeeManager();
                 break;
             default:
                 console.log("Exit SELECTED");
