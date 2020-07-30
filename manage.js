@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const { title } = require("process");
 
 //Create Connection
 const connection = mysql.createConnection({
@@ -10,14 +11,76 @@ const connection = mysql.createConnection({
     database: "employee_system"
 });
 
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Please enter employee ID: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Please enter employee first name: ",
+            name: "firstName"
+        },
+        {
+            type: "input",
+            message: "Please enter employee last name: ",
+            name: "lastName"
+        },
+        {
+            type: "input",
+            message: "Please enter employee title: ",
+            name: "title"
+        },
+        {
+            type: "input",
+            message: "Please enter employee department: ",
+            name: "department"
+        },
+        {
+            type: "input",
+            message: "Please enter employee salary: ",
+            name: "salary"
+        },
+        {
+            type: "input",
+            message: "Please enter employee manager: ",
+            name: "manager"
+        },
+    ]).then(({ id, firstName, lastName, title, department, salary, manager }) => {
+        connection.query(
+        `INSERT INTO info SET ?`,
+        {
+            id: id, 
+            first_name: firstName, 
+            last_name: lastName, 
+            title: title, 
+            department: department, 
+            salary: salary, 
+            manager: manager
+        },
+        (err, res) => {
+            if (err) throw err;
+            console.log(`Successfully Added employee ${firstName} ${lastName}!`);
+            viewEmployees();
+        }
+    )
+    });
+}
+
 const viewEmployees = () => {
     const query = ("SELECT * FROM info");
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
         console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
-        console.log(res[0].id + "   " + res[0].first_name + "   " + res[0].last_name + "   " + res[0].title + "   " + res[0].department + "   " + res[0].salary + "   " + res[0].manager);
+        for(var i = 0; i < res.length; i++) {
+            console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].salary + "   " + res[i].manager);
+        }
     });
+        
+        // console.log(res[0].id + "   " + res[0].first_name + "   " + res[0].last_name + "   " + res[0].title + "   " + res[0].department + "   " + res[0].salary + "   " + res[0].manager);
 }
 
 //Start beginning prompt
@@ -45,7 +108,7 @@ const startApp = () => {
                 break;
             case "Add Employee":
                 console.log("Add Employee SELECTED");
-                // addEmployee(); - call function
+                addEmployee();
                 break;
             case "Remove Employee":
                 console.log("Remove Employee SELECTED");
