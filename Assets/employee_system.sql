@@ -15,4 +15,6 @@ CREATE TABLE info (
 INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
 VALUES (1244, "Mark", "Gire", "Sales Lead", "Sales", 65000, "Sarah Cullen");
 
+DELETE FROM info WHERE first_name = "Mark";
+
 SELECT * FROM info;

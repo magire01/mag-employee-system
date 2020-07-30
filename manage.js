@@ -89,8 +89,15 @@ const removeEmployee = () => {
                 name: "action"
             }
         ]).then(answer => {
-            console.log(answer.action + " selected!")
-        }) 
+            console.log(answer.action + " selected!");
+            connection.query(
+                `DELETE FROM info WHERE ?`,
+                {
+                    first_name: answer.action
+                }
+            )
+            startApp();
+        });
     
     })
 }
