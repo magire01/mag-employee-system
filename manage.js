@@ -1,6 +1,7 @@
+//npms
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const { title } = require("process");
+
 
 //Create Connection
 const connection = mysql.createConnection({
@@ -11,7 +12,7 @@ const connection = mysql.createConnection({
     database: "employee_system"
 });
 
-
+//functions
 
 const addEmployee = () => {
     inquirer.prompt([
@@ -86,7 +87,6 @@ const viewEmployees = () => {
         
 }
 
-//Start beginning prompt
 const startApp = () => {
     inquirer.prompt([
         {
@@ -119,9 +119,9 @@ const startApp = () => {
                 break;
             default:
                 console.log("Exit SELECTED");
-                // exitApp(); - call function
+                connection.end();
         }
     });
 }
-
+//Start beginning prompt
 startApp();
