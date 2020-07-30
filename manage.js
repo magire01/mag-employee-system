@@ -11,6 +11,8 @@ const connection = mysql.createConnection({
     database: "employee_system"
 });
 
+
+
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -64,6 +66,7 @@ const addEmployee = () => {
             if (err) throw err;
             console.log(`Successfully Added employee ${firstName} ${lastName}!`);
             viewEmployees();
+            startApp();
         }
     )
     });
@@ -78,9 +81,9 @@ const viewEmployees = () => {
         for(var i = 0; i < res.length; i++) {
             console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].salary + "   " + res[i].manager);
         }
+        startApp();
     });
         
-        // console.log(res[0].id + "   " + res[0].first_name + "   " + res[0].last_name + "   " + res[0].title + "   " + res[0].department + "   " + res[0].salary + "   " + res[0].manager);
 }
 
 //Start beginning prompt
