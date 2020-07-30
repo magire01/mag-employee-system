@@ -33,13 +33,15 @@ const addEmployee = () => {
             name: "lastName"
         },
         {
-            type: "input",
-            message: "Please enter employee title: ",
+            type: "list",
+            message: "Please select employee title: ",
+            choices: ["Sales Associate", "Sales Lead", "Marketing Assocaite", "Marketing Lead", "Customer Service Rep", "Customer Service Lead", "Manager"],
             name: "title"
         },
         {
-            type: "input",
-            message: "Please enter employee department: ",
+            type: "list",
+            message: "Please select employee department: ",
+            choices: ["Sales", "Marketing", "Customer Service"],
             name: "department"
         },
         {
@@ -118,6 +120,31 @@ const viewEmployees = () => {
         
 }
 
+const viewEmployeeDept = () => {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Please select a department",
+            choices: ["Sales", "Marketing", "Customer Service"],
+            name: "action"
+        }
+    ]).then(answer => {
+        console.log("ACTION TEST: " + answer.action)
+        connection.query(
+            `SELECT department, id, first_name, last_name, title FROM info WHERE department = ?`, [answer.action], (err, res) => {
+                if (err) throw err;
+                console.log("RES TEST: " + res)
+                console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
+                console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
+                for(var i = 0; i < res.length; i++) {
+                    console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department);
+            }
+        }
+        )
+    })
+}
+       
+
 const startApp = () => {
     inquirer.prompt([
         {
@@ -134,7 +161,7 @@ const startApp = () => {
                 break;
             case "View Employees By Department":
                 console.log("View Employees By Department SELECTED");
-                // viewEmployeeDept(); - call function
+                viewEmployeeDept();
                 break;
             case "View Employees By Manager":
                 console.log("View Employees By Manager SELECTED");
