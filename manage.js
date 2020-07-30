@@ -183,6 +183,43 @@ const viewEmployeeMgr = () => {
     
 }
 
+const updateEmployeeRole = () => {
+    const employeeID = []
+    connection.query(`SELECT * FROM info`, (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        for(var i = 0; i < res.length; i++) {
+            employeeID.push(res[i].id);   
+        }
+        console.log(employeeID);
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Please select an employee ID",
+                choices: employeeID,
+                name: "action"
+            }
+        ]).then(answer => {
+            console.log("Answer test: " + answer.action);
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Please select a new Role",
+                    choices: ["Sales Associate", "Sales Lead", "Marketing Assocaite", "Marketing Lead", "Customer Service Rep", "Customer Service Lead", "Manager"],
+                    name: "roleAction"
+                }
+            ]).then(answer2 => {
+                console.log("Answer2 test: " + answer2.roleAction);
+                connection.query(`UPDATE info SET title = ? WHERE id = ?`,[answer2.roleAction, answer.action], (err, res) => {
+                    console.log("Role updated to " + answer2.roleAction);
+                });
+                startApp();
+            })
+            
+        });
+    });
+}
+
 const startApp = () => {
     inquirer.prompt([
         {
@@ -219,7 +256,7 @@ const startApp = () => {
                 break;
             case "Update Employee Manager":
                 console.log("Update Employee Manager SELECTED");
-                updateEmployeeManager();
+                // updateEmployeeManager();
                 break;
             default:
                 console.log("Exit SELECTED");
