@@ -1,6 +1,7 @@
 //npms
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const { clearImmediate } = require("timers");
 
 
 //Create Connection
@@ -74,18 +75,18 @@ const addEmployee = () => {
 }
 
 const removeEmployee = () => {
-    const names = []
+    const id = []
     connection.query(`SELECT * FROM info`, (err, res) => {
         if (err) throw err;
         for(var i = 0; i < res.length; i++) {
-            names.push(res[i].first_name);
+            id.push(res[i].id);   
         }
 
         inquirer.prompt([
             {
                 type: "list",
                 message: "Select employee to delete",
-                choices: names,
+                choices: id,
                 name: "action"
             }
         ]).then(answer => {
@@ -93,7 +94,7 @@ const removeEmployee = () => {
             connection.query(
                 `DELETE FROM info WHERE ?`,
                 {
-                    first_name: answer.action
+                    id: answer.action
                 }
             )
             startApp();
