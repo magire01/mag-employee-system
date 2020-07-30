@@ -130,7 +130,6 @@ const viewEmployeeDept = () => {
             name: "action"
         }
     ]).then(answer => {
-        console.log("ACTION TEST: " + answer.action)
         connection.query(
             `SELECT department, id, first_name, last_name, title FROM info WHERE department = ?`, [answer.action], (err, res) => {
                 if (err) throw err;
@@ -150,11 +149,9 @@ const viewEmployeeMgr = () => {
     const managerName = []
     connection.query(`SELECT DISTINCT manager FROM info`, (err, res) => {
         if (err) throw err;
-        console.log(res);
         for(var i = 0; i < res.length; i++) {
             managerName.push(res[i].manager);   
         }
-        console.log(managerName);
         inquirer.prompt([
             {
                 type: "list",
@@ -163,11 +160,9 @@ const viewEmployeeMgr = () => {
                 name: "action"
             }
         ]).then(answer => {
-            console.log("ACTION TEST: " + answer.action);
             connection.query(
                 `SELECT manager, id, first_name, last_name, title, department FROM info WHERE manager = ?`, [answer.action], (err, res) => {
                     if (err) throw err;
-                    console.log("RES TEST: " + res)
                     console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
                     console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
                     for(var i = 0; i < res.length; i++) {
@@ -200,7 +195,6 @@ const updateEmployeeRole = () => {
                 name: "action"
             }
         ]).then(answer => {
-            console.log("Answer test: " + answer.action);
             inquirer.prompt([
                 {
                     type: "list",
@@ -209,13 +203,54 @@ const updateEmployeeRole = () => {
                     name: "roleAction"
                 }
             ]).then(answer2 => {
-                console.log("Answer2 test: " + answer2.roleAction);
                 connection.query(`UPDATE info SET title = ? WHERE id = ?`,[answer2.roleAction, answer.action], (err, res) => {
                     console.log("Role updated to " + answer2.roleAction);
                 });
                 startApp();
             })
             
+        });
+    });
+}
+
+const updateEmployeeMgr = () => {
+    const employeeID = []
+    connection.query(`SELECT * FROM info`, (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        for(var i = 0; i < res.length; i++) {
+            employeeID.push(res[i].id);   
+        }
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Please select an employee ID",
+                choices: employeeID,
+                name: "action"
+            }
+        ]).then(answer => {
+            const managerName = []
+            connection.query(`SELECT DISTINCT manager FROM info`, (err, res) => {
+                if (err) throw err;
+                for(var i = 0; i < res.length; i++) {
+                    managerName.push(res[i].manager);   
+                }
+                console.log(managerName);
+                inquirer.prompt([
+                    {
+                        type: "list",
+                        message: "Please select a new Manager",
+                        choices: managerName,
+                        name: "mgrAction"
+                    }
+                ]).then(answer2 => {
+                    connection.query(`UPDATE info SET manager = ? WHERE id = ?`,[answer2.mgrAction, answer.action], (err, res) => {
+                        console.log("Manager updated to " + answer2.mgrAction);
+                    });
+                    startApp();
+                })
+            
+            });
         });
     });
 }
@@ -256,7 +291,7 @@ const startApp = () => {
                 break;
             case "Update Employee Manager":
                 console.log("Update Employee Manager SELECTED");
-                // updateEmployeeManager();
+                updateEmployeeMgr();
                 break;
             default:
                 console.log("Exit SELECTED");
