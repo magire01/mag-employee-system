@@ -141,8 +141,48 @@ const viewEmployeeDept = () => {
             }
         }
         )
-    })
+        startApp();
+    });
 }
+
+const viewEmployeeMgr = () => {
+    const managerName = []
+    connection.query(`SELECT DISTINCT manager FROM info`, (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        for(var i = 0; i < res.length; i++) {
+            managerName.push(res[i].manager);   
+        }
+        console.log(managerName);
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Please select a manager",
+                choices: managerName,
+                name: "action"
+            }
+        ]).then(answer => {
+            console.log("ACTION TEST: " + answer.action);
+            connection.query(
+                `SELECT manager, id, first_name, last_name, title, department FROM info WHERE manager = ?`, [answer.action], (err, res) => {
+                    if (err) throw err;
+                    console.log("RES TEST: " + res)
+                    console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
+                    console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
+                    for(var i = 0; i < res.length; i++) {
+                        console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].manager);
+             
+                    }
+                    startApp();
+                }
+            )
+        })
+        
+    })
+    
+}
+
+
        
 
 const startApp = () => {
@@ -165,7 +205,7 @@ const startApp = () => {
                 break;
             case "View Employees By Manager":
                 console.log("View Employees By Manager SELECTED");
-                // viewEmployeeMgr(); - call function
+                viewEmployeeMgr();
                 break;
             case "Add Employee":
                 console.log("Add Employee SELECTED");
