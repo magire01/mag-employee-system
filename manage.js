@@ -2,7 +2,7 @@
 //npms
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const { clearImmediate } = require("timers");
+
 
 
 //Create Connection
