@@ -14,7 +14,15 @@ CREATE TABLE info (
 
 INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
 VALUES (1244, "Mark", "Gire", "Sales Lead", "Sales", 65000, "Sarah Cullen");
+INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
+VALUES (1455, "Alex", "Gire", "Sales Associate", "Sales", 65000, "Sarah Cullen");
+INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
+VALUES (1488, "Rich", "Gire", "Marketing Lead", "Marketing", 85000, "Marge Simpson");
+INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
+VALUES (1135, "Jerry", "Morris", "Manager", "Customer Service", 85000, "John Denver");
 
-DELETE FROM info WHERE first_name = "Mark";
+UPDATE info SET title = "Manager" WHERE id = 1488;
+
+SELECT department, id, first_name, last_name FROM info WHERE department = "Marketing";
 
 SELECT * FROM info;

@@ -12,6 +12,9 @@ CREATE TABLE info (
     manager VARCHAR(40) NULL
 );
 
+
+
+
 INSERT INTO info (id, first_name, last_name, title, department, salary, manager)
 VALUES (1244, "Mark", "Gire", "Sales Lead", "Sales", 65000, "Sarah Cullen");
 

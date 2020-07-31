@@ -2,6 +2,7 @@
 //npms
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+require("console.table");
 
 
 
@@ -111,11 +112,15 @@ const viewEmployees = () => {
     const query = ("SELECT * FROM info");
     connection.query(query, (err, res) => {
         if (err) throw err;
-        console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
-        console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
-        for(var i = 0; i < res.length; i++) {
-            console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].salary + "   " + res[i].manager);
-        }
+        
+        // console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
+        // console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
+        // for(var i = 0; i < res.length; i++) {
+        //     // console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].salary + "   " + res[i].manager);
+        console.log("Result: ");
+        console.table(res);
+
+        
         startApp();
     });
         
@@ -132,13 +137,8 @@ const viewEmployeeDept = () => {
     ]).then(answer => {
         connection.query(
             `SELECT department, id, first_name, last_name, title FROM info WHERE department = ?`, [answer.action], (err, res) => {
-                if (err) throw err;
-                console.log("RES TEST: " + res)
-                console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
-                console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
-                for(var i = 0; i < res.length; i++) {
-                    console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department);
-            }
+                console.log("Results")
+                console.table(res);
         }
         )
         startApp();
@@ -163,12 +163,9 @@ const viewEmployeeMgr = () => {
             connection.query(
                 `SELECT manager, id, first_name, last_name, title, department FROM info WHERE manager = ?`, [answer.action], (err, res) => {
                     if (err) throw err;
-                    console.log("id   |   first_name   |   last_name   |   title   |   department   |   salary   |   manager   ");
-                    console.log("--   |   ----------   |   ---------   |   -----   |   ----------   |   ------   |   -------   ");
-                    for(var i = 0; i < res.length; i++) {
-                        console.log(res[i].id + "   " + res[i].first_name + "   " + res[i].last_name + "   " + res[i].title + "   " + res[i].department + "   " + res[i].manager);
+                    console.log("Results: ")
+                    console.table(res);
              
-                    }
                     startApp();
                 }
             )
@@ -214,12 +211,12 @@ const updateEmployeeRole = () => {
 }
 
 const updateEmployeeMgr = () => {
-    const employeeID = []
+    const employeeID = [];
     connection.query(`SELECT * FROM info`, (err, res) => {
         if (err) throw err;
         console.log(res);
         for(var i = 0; i < res.length; i++) {
-            employeeID.push(res[i].id);   
+            employeeID.push(res[i].id); 
         }
         inquirer.prompt([
             {
