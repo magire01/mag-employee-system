@@ -4,7 +4,7 @@
 <br>
 
 <br>
-![App-Screenshot](screenshot.png)
+![App-Screenshot](/Assets/screenshot.png)
 <br>
 <h5> Known Issues</h5>
 <ul> This app only uses one database. Will need to divide into 3 databases and use join queries </ul>
